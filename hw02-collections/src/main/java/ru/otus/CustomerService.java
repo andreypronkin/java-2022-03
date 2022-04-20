@@ -4,30 +4,22 @@ import java.util.*;
 
 public class CustomerService {
 
-    TreeMap<Customer, String> map = new TreeMap<>(Comparator.naturalOrder());
+    private final TreeMap<Customer, String> map = new TreeMap<>(Comparator.naturalOrder());
 
     public Map.Entry<Customer, String> getSmallest() {
-        Map.Entry<Customer, String> smallest =  map.firstEntry();
-
-        if (smallest == null) {
-            return null;
-        }
-
-        try {
-            return Map.entry((Customer)smallest.getKey().clone(), smallest.getValue());
-        } catch (CloneNotSupportedException e) {
-            return null;
-        }
+        return getEntryOrNull(map.firstEntry());
     }
 
     public Map.Entry<Customer, String> getNext(Customer customer) {
-        Map.Entry<Customer, String> next =  map.higherEntry(customer);
+        return getEntryOrNull(map.higherEntry(customer));
+    }
 
-        if (next == null) {
+    private Map.Entry<Customer, String> getEntryOrNull(Map.Entry<Customer, String> entry) {
+        if (entry == null) {
             return null;
         }
         try {
-            return Map.entry((Customer)next.getKey().clone(), next.getValue());
+            return Map.entry((Customer)entry.getKey().clone(), entry.getValue());
         } catch (CloneNotSupportedException e) {
             return null;
         }
